@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: buildah-pipeline
+  name: kustom-pipeline
 spec:
   params:
     - name: source-repo
@@ -50,7 +50,7 @@ spec:
       workspaces:
         - name: source
           workspace: pipeline-shared-data
-    - name: create-envorinment-config
+    - name: create-environment-config
       runAfter:
         - build-and-push-image
       taskRef:
@@ -71,9 +71,9 @@ spec:
           workspace: pipeline-shared-data
     - name: try-to-deploy
       runAfter:
-        - create-envorinment-config
+        - create-environment-config
       taskRef:
-        name: try-to-deploy
+        name: deploy-verify
       params:
         - name: app-name
           value: "$(params.app-name)"

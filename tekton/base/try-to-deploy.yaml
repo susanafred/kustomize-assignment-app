@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: try-to-deploy
+  name: deploy-verify
 spec:
   params:
     - name: app-namespace
@@ -21,7 +21,7 @@ spec:
       image: quay.io/upslopeio/kubectl:latest
       script: |
         #!/bin/sh
-        cd source
+        cd source/
         set -e
         APP_NAMESPACE="$(params.app-namespace)"
 
@@ -32,7 +32,7 @@ spec:
       image: quay.io/upslopeio/kubectl:latest
       script: |
         #!/bin/sh
-        cd source
+        cd source/
         set -e
         APP_NAMESPACE="$(params.app-namespace)"
         APP_NAME="$(params.app-name)"
