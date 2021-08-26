@@ -1,0 +1,30 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: vcs-trigger
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: susana-pipeline-run-
+      spec:
+        pipelineRef:
+          name: kustom-pipeline
+        serviceAccountName: build-bot
+        params:
+          - name: app-name
+            value: express-sample-app
+          - name: source-repo
+            value: https://github.com/susanafred/kustomize-assignment-app.git
+          - name: image-repo
+            value: quay.io/susanafred/express-sample-app
+        workspaces:
+          - name: pipeline-shared-data
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi
